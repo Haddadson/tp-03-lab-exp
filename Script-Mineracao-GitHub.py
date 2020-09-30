@@ -52,7 +52,12 @@ query laboratorio {
 """
 
 #chave de autenticação do GitHub
-token_github = "INSIRA SEU TOKEN DO GITHUB AQUI"
+#INSIRA SEU TOKEN DO GITHUB AQUI#
+token_github = None #Substitua o None por uma string com seu token de acesso ao GitHub 
+
+if token_github is None:
+   raise Exception("O token do GitHub não está configurado.")
+
 headers = {"Authorization": "Bearer " + token_github} 
 
 def mine_data(language, csv_file_name):
@@ -85,9 +90,19 @@ def mine_data(language, csv_file_name):
   #inserindo cabeçalho de identificação de dados ao csv
   print("Gravando cabeçalho CSV...")
   with open(sys.path[0] + "\\" + csv_file_name + ".csv", 'a+') as the_file:
-          the_file.write("nameWithOwner" + ";" + "url" + ";" + "stargazers/totalCount" + ";"  
-          + "createdAt (UTC)" + ";" + "repositoryAge" + ";" + "primaryLanguage/name" + ";" 
-          + "releases/totalCount" + ";" + "watchers/totalCount" + ";" + "forks/totalCount\n")
+          the_file.write(
+            "nameWithOwner" + ";" + 
+            "url" + ";" +
+            "primaryLanguage->name" + ";"  +
+            "stargazers->totalCount" + ";" +
+            "createdAt (UTC)" + ";" + 
+            "repositoryAge (years)" + ";" +
+            "repositoryAge (days)" + ";" +
+            "releases->totalCount" + ";" +
+            "releases/repositoryAge(days)" + ";" +
+            "watchers->totalCount" + ";" +
+            "forks->totalCount\n"
+          )
 
   #salvando os dados no CSV
   print(language + " - Gravando linhas CSV...")
@@ -100,16 +115,28 @@ def mine_data(language, csv_file_name):
       date_pattern = "%Y-%m-%dT%H:%M:%SZ"
       datetime_now = datetime.now()
       datetime_created_at = datetime.strptime(node['createdAt'], date_pattern)
-      repository_age = relativedelta.relativedelta(datetime_now, datetime_created_at).years
+      repository_age_years = relativedelta.relativedelta(datetime_now, datetime_created_at).years
+      repository_age_days = (datetime_now - datetime_created_at).days
+
+      if repository_age_days == 0:
+        releases_per_days = 0
+      else:
+        releases_per_days = node['releases']['totalCount'] / repository_age_days
 
       with open(sys.path[0] + "\\" + csv_file_name + ".csv", 'a+') as the_file:
-          the_file.write(node['nameWithOwner'] + ";" +node['url'] + ";" 
-          + str(node['stargazers']['totalCount']) + ";" 
-          + datetime_created_at.strftime('%d/%m/%y %H:%M:%S') + ";" + str(repository_age) + ";" 
-          + primary_language + ";" 
-          + str(node['releases']['totalCount']) + ";" 
-          + str(node['watchers']['totalCount']) + ";" 
-          + str(node['forks']['totalCount']) + "\n")
+          the_file.write(
+            node['nameWithOwner'] + ";" + 
+            node['url'] + ";" + 
+            str(node['stargazers']['totalCount']) + ";" + 
+            primary_language + ";" +
+            datetime_created_at.strftime('%d/%m/%y %H:%M:%S') + ";" +
+            str(repository_age_years) + ";" +
+            str(repository_age_days) + ";" +
+            str(node['releases']['totalCount']) + ";" +
+            str(releases_per_days) + ";" +
+            str(node['watchers']['totalCount']) + ";" +
+            str(node['forks']['totalCount']) + "\n"
+          )
 
   print("Finalizando...")
     
