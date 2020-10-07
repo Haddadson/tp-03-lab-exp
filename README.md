@@ -43,6 +43,10 @@ Para execução do script, é necessário instalar as dependências utilizando o
 
 > pip install python-dateutil
 
+> pip install python_loc_counter
+
+É necessário possuir o Git instalado para efetuar a clonagem dos repositórios.
+
 Também é necessário inserir um token pessoal de desenvolvedor para acesso à API do GitHub no trecho indicado no código.
 
 Após isso, basta executar o script e os arquivos CSV "ResultadoPython.csv" e "ResultadoJava.csv" serão criados na mesma pasta.
