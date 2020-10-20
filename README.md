@@ -26,11 +26,17 @@ Para respondê-las, será necessário realizar uma análise quantitativa dos dad
 Também será necessário clonar cada repositório localmente para realizar uma análise do código, contabilizando as LOCs e SLOCs e obtendo outras métricas de qualidade.
 
 ## Relatório Final
-Apresente uma extensão do comparativo dos repositórios Java e Python considerando as métricas:  
-i. Complexidade ciclomática  
-ii. Índice de manutenibilidade  
-iii. Halstead  
-Veja como referência como é feito pela ferramenta "radon" em https://radon.readthedocs.io/en/latest/intro.html
+Para cada uma das questões de pesquisa, faça uma sumarização dos dados obtidos através de valores medianos. Mesmo que de forma informal, elabore hipóteses sobre o que você espera de resposta e tente analisar a partir dos valores obtidos.
+
+Elabore um documento que apresente:
+
+i. uma introdução simples com hipóteses informais;
+
+ii. a metodologia que você utilizou para responder às questões de pesquisa;
+
+iii. os resultados obtidos para cada uma delas;
+
+iv. a discussão sobre o que você esperava como resultado (suas hipóteses) e os valores obtidos.
 
 
 ## Execução
